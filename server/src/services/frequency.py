@@ -23,19 +23,12 @@ class frequency(object):
         # Todo: implement condition for serviced date
         engine = db.create_engine(self.dbString)
 
-        if serviced:
-            query = "SELECT \
+        query = f"SELECT \
             requesttype,\
             createddate,\
             closeddate,\
-            servicedate\
-            FROM %s" % self.table
-        else:
-            query = "SELECT \
-            requesttype,\
-            createddate,\
-            closeddate\
-            FROM %s" % self.table
+            {'servicedate,' if serviced else ''}\
+            FROM {self.table}"
 
         df = pd.read_sql_query(query, con=engine)
 
